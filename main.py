@@ -22,7 +22,7 @@ def main():
     if use_cuda:
         torch.cuda.set_device(gpu_id)
     batch_size = 50
-    n_epochs = 30
+    n_epochs = 5
     train, dev, test = load('data/google_com_train.conll',
                             'data/google_com_dev.conll',
                             'data/google_com_test.conll',

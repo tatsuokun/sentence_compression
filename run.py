@@ -60,6 +60,7 @@ def run(dataset_train,
                                             use_cuda)
     print('====', 'TEST', '=====')
     print_scores(preds, golds)
+    output_results(tokens, preds, golds)
 
 
 def train(dataset,
@@ -171,9 +172,19 @@ def print_scores(preds, golds):
     print(classification_report(_golds, _preds, target_names=target_names, digits=5))
 
 
-def output_results(tokens, preds, path='results/sentcomp'):
-    with open(path, mode='w') as w:
-        for _tokens, _preds in zip(tokens, preds):
-            for token, pred in zip(_tokens, _preds):
-                w.write(token + '\t' + str(pred) + '\n')
+def output_results(tokens, preds, golds, path='./result/sentcomp'):
+    with open(path+'.original.txt', mode='w') as w, \
+            open(path+'.gold.txt', mode='w') as w_gold, \
+            open(path+'.pred.txt', mode='w') as w_pred:
+
+        for _tokens, _golds, _preds in zip(tokens, golds, preds):
+            for token, gold, pred in zip(_tokens, _golds, _preds):
+                w.write(token + ' ')
+                if gold == 0:
+                    w_gold.write(token + ' ')
+                # 0 -> keep, 1 -> delete
+                if pred == 0:
+                    w_pred.write(token + ' ')
             w.write('\n')
+            w_gold.write('\n')
+            w_pred.write('\n')
